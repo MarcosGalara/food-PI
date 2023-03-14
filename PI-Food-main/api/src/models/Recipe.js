@@ -33,5 +33,8 @@ module.exports = (sequelize) => {
       // se utiliza para definir un campo de tipo matriz y contiene valores de tipo STRING
       allowNull: false
     }
+  },
+  {
+    timestamps: false
   });
 };
