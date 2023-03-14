@@ -1,9 +1,5 @@
 const { Router  } = require('express');
 const { Diet } = require('../db.js');
-const { Recipe } = require('../db.js')
-
-
-const { API_KEY } = process.env;
 
 const router = Router()
 
@@ -23,13 +19,11 @@ router.post("/", async (req, res) =>{
 
 router.get('/', async (req, res) => {
     try {
-    const allDiet = await Diet.findAll();
+        const allDiet = await Diet.findAll();
 
-    if(allDiet.length === 0){
-
-    }
+        return res.status(200).json(allDiet)
     } catch (error) {
-    
+        return res.status(400).json(error.message)
     }
 })
 

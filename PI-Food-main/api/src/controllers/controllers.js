@@ -2,10 +2,11 @@ const { Router } = require('express');
 
 const axios = require("axios");
 const { Recipe } = require("../db.js");
-const { Diets } = require("../db.js");
+const { Diet } = require("../db.js");
 const { API_KEY } = process.env;
-const simplifyContent = require('./utils.js');
+const simplifyContent = require('../routes/utils.js');
 
+//PASO 1: PEDIR INFO A LA API EXTERNA
 const getApiInfo = async () => {
     
     let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`
@@ -16,11 +17,12 @@ const getApiInfo = async () => {
     return apiRecipes;
 }
 
+//PASO 2: PEDIR INFO A LA BD
 const getDBinfo = async () => {
 
     let getAllinfo = await Recipe.findAll({
         includes:{
-            model: Diets,
+            model: Diet,
         }
     });
     
@@ -37,18 +39,20 @@ const postRecipe = async (objRecipe) => {
             healthScore,
             steps,
         }
-
-        const dietInfo = await Diets.findAll({
-            where: {
-                name: diets
-            }
-        })
-
         const createRecipe = await Recipe.create(recipe);
-        createRecipe.addDiets(dietInfo)
-        return Recipe.findAll();
+        
+        for (let i = 0; i < diets.length; i++) {
+            const diet = await Diet.findAll({
+                where:{
+                    name: diets[i]
+                }
+            })
+            
+            await createRecipe.addDiets(diet[0].id)
+        }
+        return createRecipe;
     } catch (error) {
-        console.log("error");
+        return error;
     }
 }
 
