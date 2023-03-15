@@ -4,7 +4,7 @@ const axios = require("axios");
 const { Recipe } = require("../db.js");
 const { Diet } = require("../db.js");
 const { API_KEY } = process.env;
-const simplifyContent = require('../routes/utils.js');
+const { simplifyContent } = require('../routes/utils.js');
 
 //PASO 1: PEDIR INFO A LA API EXTERNA
 const getApiInfo = async () => {

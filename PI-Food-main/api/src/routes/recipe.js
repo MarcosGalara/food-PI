@@ -1,12 +1,14 @@
 const { Router  } = require('express');
 const { Recipe, Diet } = require('../db.js');
 const { getApiInfo, getDBinfo, postRecipe } = require('../controllers/controllers.js');
+const { Op } = require("sequelize");
 
 const { API_KEY } = process.env;
 const axios  = require("axios");
 
 const router = Router()
 
+//ESTA RUTA ESTA BIEN
 router.get('/:id', async (req, res) =>{
     try {
         const { id } = req.params;
@@ -19,6 +21,7 @@ router.get('/:id', async (req, res) =>{
         try {
 
             const { id } = req.params;
+
             const recipeById = await Recipe.findByPk(id, { 
                 include: {
                     model: Diet,
@@ -34,11 +37,13 @@ router.get('/:id', async (req, res) =>{
         
     }
 })
-// 	716426
+
 //OBTENER LA RECIPE POR QUERY O DEVOLVER TODA LA LISTA DE RECETAS
+
 router.get('/', async (req, res) =>{
+    const { name } = req.query;
+    
     try {
-        const { name } = req.query;
         if(name){// busca el nombre de la receta que coincida con el que me pasaron por query              
             const recipeByName = await Recipe.findAll({
                 where: {
@@ -47,9 +52,16 @@ router.get('/', async (req, res) =>{
                     }
                 }
             })
-
-            // falta buscar todas las recetas en la api, y aplicarle al array un .filter, con la condicion que incluya el nombre
-            recipeByName.length ? res.status(200).json(recipeByName) : res.status(404).send('Recipe not Found')
+            let nameFiltered = await getApiInfo();
+            nameFiltered = nameFiltered.filter(recipe => recipe.name.toLowerCase().includes(name.toLowerCase()))
+            console.log(nameFiltered.length);
+            console.log("llegue aca");
+            
+            let total = recipeByName.concat(nameFiltered);
+            if(!total.length){
+                return res.status(404).json({error: 'Recipe not found'})
+            }
+            return res.status(200).json(total)
         } else {
             // sino, devolve el total de recetass
             let totalApiRecipes = await getApiInfo();
@@ -59,7 +71,7 @@ router.get('/', async (req, res) =>{
         }
 
     } catch (error) {
-    return res.status(404).send(error.message);
+        return res.status(404).json({error: error.message});
     }
 }) 
 

@@ -14,7 +14,7 @@ const simplifyContent = (recipes) => {
         else{
             recipe.steps = recipes[key].analyzedInstructions["0"].steps
         }
-       
+        
         recipe.diets = recipes[key].diets
         const aux = {
             vegetarian: recipes[key].vegetarian,
@@ -33,4 +33,20 @@ const simplifyContent = (recipes) => {
     return array;
 }
 
-module.exports = simplifyContent;
+const extractDiets = (recipes) => {
+    let diets = []
+    console.log(recipes[0]);
+    recipes.map(r => {
+        r.diets.map(d => {
+            diets.push(d)
+        })
+    })
+    return diets;
+}
+
+
+
+module.exports = {
+    simplifyContent,
+    extractDiets,
+};
