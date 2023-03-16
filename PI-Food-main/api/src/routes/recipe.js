@@ -8,7 +8,7 @@ const axios  = require("axios");
 
 const router = Router()
 
-//ESTA RUTA ESTA BIEN
+//ESTA RUTA FUNCIONA
 router.get('/:id', async (req, res) =>{
     try {
         const { id } = req.params;
@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) =>{
 })
 
 //OBTENER LA RECIPE POR QUERY O DEVOLVER TODA LA LISTA DE RECETAS
-
+//ESTA RUTA FUNCIONA
 router.get('/', async (req, res) =>{
     const { name } = req.query;
     
@@ -75,7 +75,7 @@ router.get('/', async (req, res) =>{
     }
 }) 
 
-
+//ESTA RUTA FUNCIONA
 router.post("/", async (req, res) =>{
     try {
         const objRecipe = req.body;
@@ -88,4 +88,4 @@ router.post("/", async (req, res) =>{
     }
 })
 
-module.exports = router;
+module.exports = router;6

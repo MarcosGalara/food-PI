@@ -3,7 +3,7 @@ const { Diet } = require('../db.js');
 const { getApiInfo } = require('../controllers/controllers.js');
 const { extractDiets } = require('./utils.js');
 const router = Router()
-
+//ESTA RUTA FUNCIONA
 router.get('/', async (req, res) => {
     try {
         const allDiet = await Diet.findAll();
