@@ -1,8 +1,15 @@
+import React from "react";
+import { Link }  from "react-router-dom";
+import style from './Landing.module.css';
+
 const Landing = () => {
     return(
-        <>
-        <h1>Estoy en Landing</h1>
-        </>
+        <div className={style.divContainer}>
+            <img />
+            <Link to='/home'>
+                <button>Ingresar</button>
+            </Link>
+        </div>
     )
 }
 

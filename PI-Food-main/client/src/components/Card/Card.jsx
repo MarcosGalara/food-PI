@@ -1,11 +1,11 @@
 import style from './Card.module.css';
 
-const Card = (props) => {
+const Card = ({image, name, diets, id}) => {
     return(
         <div className={style.card}>
-            <p>{props.image}</p>
-            <p>Name:{props.name}</p>
-            <p>Diets:{props.diets}</p>
+            <h3>Name:{name}</h3>
+            <h5>Diets:{diets}</h5>
+            <img src={image} alt='img not found' width="280px" height="200px"></img>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { GET_RECIPES, GET_RECIPE_ID, GET_DIETS, GET_RECIPE_NAME } from './types.js';
+import { FILTER_BY_DIET, GET_RECIPES, GET_RECIPE_ID, GET_DIETS, GET_RECIPE_NAME } from './types.js';
 import axios from "axios";
 
 // TODAS LAS RECETAS
@@ -46,5 +46,12 @@ export const recipeByName = (name) => {
         } catch (error) {
             return dispatch({ type: GET_RECIPE_NAME, payload: [] })
         }
+    }
+}
+
+export const filterRecipesByDiet = (payload) => {
+    return {
+        type: FILTER_BY_DIET, 
+        payload
     }
 }
