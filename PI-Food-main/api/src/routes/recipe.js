@@ -53,7 +53,7 @@ router.get('/', async (req, res) =>{
                 }
             })
             let nameFiltered = await getApiInfo();
-            console.log(nameFiltered);
+            
             nameFiltered = nameFiltered.filter(recipe => recipe.name.toLowerCase().includes(name.toLowerCase()))
             
             let total = recipeByName.concat(nameFiltered);
@@ -82,7 +82,7 @@ router.post("/", async (req, res) =>{
         if(!objRecipe) res.status(404).send('Missing info')
         const newRecipe = await postRecipe(objRecipe)
 
-        return res.status(200).send(newRecipe)
+        return res.status(200).json(newRecipe)
     } catch (error) {
         return res.status(404).json(error.message)
     }

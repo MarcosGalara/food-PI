@@ -31,14 +31,13 @@ const getDBinfo = async () => {
 
 const postRecipe = async (objRecipe) => {
     try {
-        const {  name, image, dishSummary, healthScore, steps, diets, createdInDb } = objRecipe;
+        const {  name, image, dishSummary, healthScore, steps, diets } = objRecipe;
         const recipe = {
             name,
             image,
             dishSummary,
             healthScore,
-            steps,
-            createdInDb
+            steps
         }
         const createRecipe = await Recipe.create(recipe);
         

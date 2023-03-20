@@ -1,4 +1,12 @@
-import { FILTER_BY_CREATED, FILTER_BY_DIET, GET_RECIPES, GET_RECIPE_ID, GET_DIETS, GET_RECIPE_NAME } from './types.js';
+import { ORDER_BY_NAME,
+        FILTER_BY_CREATED,
+        FILTER_BY_DIET,
+        GET_RECIPES,
+        GET_RECIPE_ID,
+        GET_DIETS,
+        GET_RECIPE_NAME,
+        ORDEN_BY_SCORE,
+         } from './types.js';
 import axios from "axios";
 
 // TODAS LAS RECETAS
@@ -61,6 +69,22 @@ export const filterRecipesByDiet = (payload) => {
 export const filterCreated = (payload) => {
     return{
         type: FILTER_BY_CREATED,
+        payload
+    }
+}
+
+//FILTRADO POR ORDEN ALFABETICO
+export const orderByName = (payload) => {
+    return{
+        type: ORDER_BY_NAME,
+        payload
+    }
+}
+
+//FILTRADO POR HEALTH SCORE
+export const orderByScore = (payload) => {
+    return{
+        type: ORDEN_BY_SCORE,
         payload
     }
 }

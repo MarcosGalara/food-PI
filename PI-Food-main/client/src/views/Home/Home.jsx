@@ -1,9 +1,12 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { 
     getRecipes,
     filterRecipesByDiet,
     filterCreated,
+    orderByName,
+    orderByScore,
     } from "../../redux/actions.js";
 import Paginado from "../../components/Paginado/Paginado.jsx";
 import { Link  } from "react-router-dom";
@@ -16,6 +19,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const allRecipes = useSelector((state) => state.recipes)
     // ---------------------------PAGINADO-------------------------------------
+    const [orden, setOrden] = useState("asc")
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(9);
     const indexOfLastRecipe = currentPage * recipesPerPage; // 9
@@ -34,6 +38,18 @@ const Home = () => {
     const handlerFilterCreated = (e) => {
         dispatch(filterCreated(e.target.value))
     }
+
+    const handlerSortByName = (e) => {
+        dispatch(orderByName(e.target.value))
+        setCurrentPage(1);
+        setOrden(`${e.target.value}`)
+    }
+
+    const handlerSortByScore = (e) => {
+        dispatch(orderByScore(e.target.value))
+        setCurrentPage(1);
+        setOrden(`${e.target.value}`)
+    } 
     //--------------------------------------------------------------------------------------------
     //cuando se monta, hago el dispatch
     //  useEffect()   -   useDispatch()
@@ -43,7 +59,7 @@ const Home = () => {
     },[dispatch])
     
 
-    const handleChange = (event) =>{
+    const handleRefresh = (event) =>{
         event.preventDefault();
         dispatch(getRecipes());
     }
@@ -52,7 +68,7 @@ const Home = () => {
         <div>
             <div>
                 <button onClick={(e) => {
-                    handleChange(e);
+                    handleRefresh(e);
                 }}>Refresh</button>
 
                 <Link to="/form">
@@ -60,11 +76,11 @@ const Home = () => {
                 </Link>
             </div>
             <div>
-                <select>
-                    <option value="ASC">A - Z</option>
-                    <option value="DESC">Z - A</option>
+                <select onChange={(e) => handlerSortByName(e)}>
+                    <option value="asc">A - Z</option>
+                    <option value="desc">Z - A</option>
                 </select>
-                <select>
+                <select onChange={(e) => handlerSortByScore(e)}>
                     <option value="Higher Score">Highest Score</option>
                     <option value="Lower Score">Lowest Score</option>
                 </select>

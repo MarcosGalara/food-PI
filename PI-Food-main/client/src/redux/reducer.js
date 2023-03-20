@@ -6,6 +6,8 @@ import {
     POST_RECIPES, 
     GET_RECIPE_NAME,
     FILTER_BY_CREATED,
+    ORDER_BY_NAME,
+    ORDEN_BY_SCORE,
 } from "./types.js";
 
 
@@ -53,7 +55,7 @@ const rootReducer = (state = initialState, action) => {
 
             const dietsFiltered = action.payload === "All" 
             ? allRecipes : allRecipes.filter((el) => 
-                el.diets.includes(action.payload)
+                el.diets?.includes(action.payload)
             )
             return{
                 ...state,
@@ -70,6 +72,41 @@ const rootReducer = (state = initialState, action) => {
                 recipes: action.payload === "All" 
                 ? state.filterRecipes
                 : createdFilter
+            }
+        
+        case ORDER_BY_NAME:
+            let sortedArray = action.payload === "asc"
+            ? state.recipes.sort((a, b)=>{
+                if(a.name > b.name) return 1;
+                if(b.name > a.name) return -1;
+                return 0
+            }) 
+            : state.recipes.sort((a, b) =>{
+                if(b.name > a.name) return -1;
+                if(a.name >  b.name) return 1;
+                return 0
+            })
+            return {
+                ...state,
+                recipes: sortedArray
+            }
+        
+        case ORDEN_BY_SCORE:
+            case ORDER_BY_NAME:
+            let sortedArray1 = action.payload === "Higher Score"
+            ? state.recipes.sort((a, b)=>{
+                if(a.healthScore > b.healthScore ) return 1;
+                if(b.healthScore > a.healthScore ) return -1;
+                return 0
+            }) 
+            : state.recipes.sort((a, b) =>{
+                if(b.healthScore > a.healthScore ) return -1;
+                if(a.healthScore > b.healthScore ) return 1;
+                return 0
+            })
+            return {
+                ...state,
+                recipes: sortedArray1
             }
 
         default:
