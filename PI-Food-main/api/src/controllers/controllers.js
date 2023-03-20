@@ -31,13 +31,14 @@ const getDBinfo = async () => {
 
 const postRecipe = async (objRecipe) => {
     try {
-        const {  name, image, dishSummary, healthScore, steps, diets } = objRecipe;
+        const {  name, image, dishSummary, healthScore, steps, diets, createdInDb } = objRecipe;
         const recipe = {
             name,
             image,
             dishSummary,
             healthScore,
             steps,
+            createdInDb
         }
         const createRecipe = await Recipe.create(recipe);
         
@@ -56,8 +57,31 @@ const postRecipe = async (objRecipe) => {
     }
 }
 
+const putDietInfo = async () => {
+    const dietTypes = [
+        "gluten free",
+        "dairy free",
+        "lacto ovo vegetarian",
+        "vegan",
+        "paleolithic",
+        "primal",
+        "pescatarian",
+        "fodmap friendly",
+        "whole 30",
+    ];
+    dietTypes.forEach((d) => {
+        Diet.findOrCreate({
+            where: {
+                name: d,
+            }
+        })
+    })
+    return Diet.findAll();
+
+}
 module.exports = { 
     getApiInfo,
     getDBinfo, 
     postRecipe,
+    putDietInfo,
 }

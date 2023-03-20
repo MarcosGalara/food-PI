@@ -1,4 +1,4 @@
-import { FILTER_BY_DIET, GET_RECIPES, GET_RECIPE_ID, GET_DIETS, GET_RECIPE_NAME } from './types.js';
+import { FILTER_BY_CREATED, FILTER_BY_DIET, GET_RECIPES, GET_RECIPE_ID, GET_DIETS, GET_RECIPE_NAME } from './types.js';
 import axios from "axios";
 
 // TODAS LAS RECETAS
@@ -49,9 +49,18 @@ export const recipeByName = (name) => {
     }
 }
 
+//FILTRADO POR TIPO DE DIETA
 export const filterRecipesByDiet = (payload) => {
     return {
         type: FILTER_BY_DIET, 
+        payload
+    }
+}
+
+//FILTRADO POR API O CREADO
+export const filterCreated = (payload) => {
+    return{
+        type: FILTER_BY_CREATED,
         payload
     }
 }

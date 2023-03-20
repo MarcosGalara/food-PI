@@ -1,10 +1,19 @@
 const { Router  } = require('express');
 const { Diet } = require('../db.js');
-const { getApiInfo } = require('../controllers/controllers.js');
+const { getApiInfo, putDietInfo } = require('../controllers/controllers.js');
 const { extractDiets } = require('./utils.js');
 const router = Router()
-//ESTA RUTA FUNCIONA
-router.get('/', async (req, res) => {
+
+router.get("/", async (req, res) => {
+    try {
+        const allDiets = await putDietInfo();
+        res.status(200).send(allDiets)
+    } catch (error) {
+        res.status(404).send(error);
+    }
+})
+
+/* router.get('/', async (req, res) => {
     try {
         const allDiet = await Diet.findAll();
         // si el findall devuelve array vacio, hay que traer toda la info de la api, 
@@ -28,7 +37,7 @@ router.get('/', async (req, res) => {
     } catch (error) {
         return res.status(400).json(error.message)
     }
-})
+}) */
 //RUTA DE PRUEBA PARA CREAR UNA NUEVA DIETA Y TESTEAR
 /* router.post("/", async (req, res) =>{
     const { name } = req.body;
@@ -41,7 +50,7 @@ router.get('/', async (req, res) => {
     } catch (error) {
     return res.status(404).json( error.message );
     }
-}) */
+})  */
 
 
 module.exports = router;

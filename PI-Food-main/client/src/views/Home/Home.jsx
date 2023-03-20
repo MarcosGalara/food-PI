@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { 
     getRecipes,
     filterRecipesByDiet,
+    filterCreated,
     } from "../../redux/actions.js";
 import Paginado from "../../components/Paginado/Paginado.jsx";
 import { Link  } from "react-router-dom";
@@ -13,8 +14,8 @@ import Card from "../../components/Card/Card.jsx";
 const Home = () => {
 
     const dispatch = useDispatch();
-    const allRecipes = useSelector((state) => state.users)
-    //Paginado
+    const allRecipes = useSelector((state) => state.recipes)
+    // ---------------------------PAGINADO-------------------------------------
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage, setRecipesPerPage] = useState(9);
     const indexOfLastRecipe = currentPage * recipesPerPage; // 9
@@ -24,24 +25,29 @@ const Home = () => {
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber) // cambia mi numero de pagina
     }
+
+    const handlerFilterDiet = (e) => {
+        dispatch(filterRecipesByDiet(e.target.value))
+        setCurrentPage(1);
+    }
+
+    const handlerFilterCreated = (e) => {
+        dispatch(filterCreated(e.target.value))
+    }
+    //--------------------------------------------------------------------------------------------
     //cuando se monta, hago el dispatch
     //  useEffect()   -   useDispatch()
 
     useEffect(() => {
         dispatch(getRecipes())
     },[dispatch])
-
+    
 
     const handleChange = (event) =>{
         event.preventDefault();
         dispatch(getRecipes());
     }
 
-    //FALTA REVISAR EL BACK PORQUE NO ME LO ESTA FILTRANDO
-    //los value del select por diet tiene que coincidir con los que traigo por back
-    const handleFilterDiet = (event) => {
-        dispatch(filterRecipesByDiet(event.target.value))
-    }
     return(
         <div>
             <div>
@@ -62,17 +68,17 @@ const Home = () => {
                     <option value="Higher Score">Highest Score</option>
                     <option value="Lower Score">Lowest Score</option>
                 </select>
-                <select>
+                <select onChange={(e) => handlerFilterCreated(e)} >
                     <option value="All">All</option>
                     <option value="created">Created</option>
                     <option value="api">From API</option>
                 </select>
-                <select onClick={(e)=> handleFilterDiet(e)}>
-                    <option value="All">All</option>
+                <select onChange={(e)=> handlerFilterDiet(e)}>
+                    <option value="All">All Diets</option>
                     <option value="gluten free">Gluten Free</option>
                     <option value="dairy free">Dairy Free</option>
-                    <option value="vegan">Vegan</option>
                     <option value="lacto ovo vegetarian">Lacto Ovo Vegetarian</option>
+                    <option value="vegan">Vegan</option>
                     <option value="pescatarian">Pescatarian</option>
                     <option value="paleolithic">Paleolithic</option>
                     <option value="primal">Primal</option>

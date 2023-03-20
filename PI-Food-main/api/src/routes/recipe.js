@@ -53,11 +53,11 @@ router.get('/', async (req, res) =>{
                 }
             })
             let nameFiltered = await getApiInfo();
+            console.log(nameFiltered);
             nameFiltered = nameFiltered.filter(recipe => recipe.name.toLowerCase().includes(name.toLowerCase()))
-            console.log(nameFiltered.length);
-            console.log("llegue aca");
             
             let total = recipeByName.concat(nameFiltered);
+            
             if(!total.length){
                 return res.status(404).json({error: 'Recipe not found'})
             }
@@ -88,4 +88,4 @@ router.post("/", async (req, res) =>{
     }
 })
 
-module.exports = router;6
+module.exports = router;

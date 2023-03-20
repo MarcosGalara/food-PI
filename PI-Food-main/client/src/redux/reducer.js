@@ -1,8 +1,17 @@
-import { FILTER_BY_DIET, GET_RECIPES, GET_RECIPE_ID, GET_DIETS, POST_RECIPES, GET_RECIPE_NAME } from "./types.js";
+import { 
+    FILTER_BY_DIET,
+    GET_RECIPES, 
+    GET_RECIPE_ID, 
+    GET_DIETS, 
+    POST_RECIPES, 
+    GET_RECIPE_NAME,
+    FILTER_BY_CREATED,
+} from "./types.js";
 
 
 const initialState ={
-    users: [],
+    recipes: [],
+    filterRecipes: [],
     userDetail: [],
     diets: [],
 };
@@ -12,7 +21,9 @@ const rootReducer = (state = initialState, action) => {
         case GET_RECIPES:
             return {
                 ...state,
-                users: action.payload};
+                recipes: action.payload,
+                filterRecipes: action.payload
+            };
 
         case GET_RECIPE_ID:
             return {
@@ -38,13 +49,27 @@ const rootReducer = (state = initialState, action) => {
             }
         
         case FILTER_BY_DIET:
-            const allRecipes = state.users;
+            const allRecipes = state.filterRecipes;
+
             const dietsFiltered = action.payload === "All" 
-            ? allRecipes : allRecipes.filter(el => 
-            el.diets === action.payload)
+            ? allRecipes : allRecipes.filter((el) => 
+                el.diets.includes(action.payload)
+            )
             return{
                 ...state,
-                users: dietsFiltered
+                recipes: dietsFiltered
+            }
+        
+        case FILTER_BY_CREATED:
+            const allRecipesAux = state.filterRecipes;
+            const createdFilter = action.payload === "created"
+            ? allRecipesAux.filter(el => el.createdInDb)
+            : allRecipesAux.filter(el => !el.createdInDb)
+            return{
+                ...state,
+                recipes: action.payload === "All" 
+                ? state.filterRecipes
+                : createdFilter
             }
 
         default:
