@@ -11,6 +11,7 @@ import {
 import Paginado from "../../components/Paginado/Paginado.jsx";
 import { Link  } from "react-router-dom";
 import Card from "../../components/Card/Card.jsx";
+import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 
 
 
@@ -62,6 +63,7 @@ const Home = () => {
     const handleRefresh = (event) =>{
         event.preventDefault();
         dispatch(getRecipes());
+        
     }
 
     return(
@@ -74,6 +76,8 @@ const Home = () => {
                 <Link to="/form">
                     <button>Create new recipe</button>
                 </Link>
+
+                <SearchBar />
             </div>
             <div>
                 <select onChange={(e) => handlerSortByName(e)}>
@@ -117,7 +121,9 @@ const Home = () => {
                                 key={e.id}
                                 id={e.id}
                                 name={e.name}
-                                image={e.image}
+                                image={e.image
+                                    ? e.image 
+                                    : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg"/>}
                                 diets={e.diets}
                             />
                         </div>

@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { postRecipes } from "../../redux/actions.js";
+import React from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { recipeByName } from "../../redux/actions";
+import { postRecipes, getAllDiets } from "../../redux/actions";
 
 const Form = () => {
     
-    let validateImg = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
+    //NECESITO REPLANTEAR LAS VALIDACIONES YA QUE NO FUNCIONAN BIEN
+    /* let validateImg = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
     const validate = (form) => {
         const errors = {};
         if (form.name === "" || /[^a-zA-Z, ]/g.test(form.name)) {
@@ -21,7 +25,7 @@ const Form = () => {
             errors.diets = "You need to add a diet";
         }
         return errors;
-    }
+    } */
     const [errors, setErrors] = useState({
         /* name: "",
         dishSummary: "",
@@ -34,94 +38,144 @@ const Form = () => {
     const [form, setForm] = useState({
         name: "",
         dishSummary: "",
-        healthScore: "",
-        image: "",
-        steps: [],
         diets: [],
+        image: "",
+        healthScore: "",
+        steps: "",
     })
 
     const dispatch = useDispatch();
+    //para que cuando envie la receta creada me envie a la ruta HOME
+    let navigate = useNavigate();
+    const diets = useSelector((state) => state.diets)
 
     const changeHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
 
-        setErrors(validate({
+        /* setErrors(validate({
             ...form,
             [property]: value 
-        }))
+        })) */
         setForm({ 
             ...form,
             [property]: value 
         })
     }
 
+    useEffect(() => {
+        dispatch(getAllDiets())
+    },[dispatch])
+    
+    const handlerCheck = (e) => {
+        if(e.target.checked){
+            setForm({
+                ...form,
+                diets: [...form.diets, e.target.value],
+            })
+        }
+    }
+
     const submitHandler = (event) => {
         event.preventDefault();
         dispatch(postRecipes(form))
         alert("You just set the new Recipe")
+        setForm({
+            name: "",
+            dishSummary: "",
+            diets: [],
+            image: "",
+            healthScore: "",
+            steps: "",
+        })
+        /* history.push("/home") */
+        navigate('/home')
     }
+
 
     return(
         <div>
-            <form onSubmit={submitHandler}>
-                <h1>CREATE RECIPE</h1>
+            <Link to= '/home'>
+                <button>Return</button>
+            </Link>
+            <h1>Create your own Recipe</h1>
+            <form onSubmit={(e) =>submitHandler(e)}>
                 <div>
-                    <label>Name: </label>
-                    <input 
-                        type="text" 
-                        value={form.name} 
-                        onChange={changeHandler} 
-                        name="name" 
-                        placeholder="Write Recipe name..."/>
-                    {errors.name && <p>{errors.name}</p>}
-                </div>
+                    <div>
+                        <label>Name: </label>
+                        <input 
+                            type="text" 
+                            value={form.name} 
+                            onChange={(e) =>changeHandler(e)} 
+                            name="name" 
+                            placeholder="Write Recipe name..."/>
+                        {errors.name && <p>{errors.name}</p>}
+                    </div>
 
-                <div>
-                    <label>Summary: </label>
-                    <input 
-                        type="text" 
-                        value={form.dishSummary} 
-                        onChange={changeHandler} 
-                        name="dishSummary" 
-                        placeholder="Detail your Recipe..."/>
-                    {errors.dishSummary && <p>{errors.dishSummary}</p>}
-                </div>
+                    <div>
+                        <label>Summary: </label>
+                        <input 
+                            type="text" 
+                            value={form.dishSummary} 
+                            onChange={(e) =>changeHandler(e)} 
+                            name="dishSummary" 
+                            placeholder="Detail your Recipe..."/>
+                        {errors.dishSummary && <p>{errors.dishSummary}</p>}
+                    </div>
 
-                <div>
-                    <label>Health Score: </label>
-                    <input 
-                        type="number" 
-                        value={form.healthScore} 
-                        onChange={changeHandler} 
-                        name="healthScore" 
-                        placeholder="Put Health Score..."/>
-                    {errors.healthScore && <p>{errors.healthScore}</p>}
-                </div>
+                    <div>
+                        <label>Health Score: </label>
+                        <input 
+                            id="score"
+                            type="text" 
+                            value={form.healthScore} 
+                            onChange={(e) =>changeHandler(e)} 
+                            name="healthScore" 
+                            min="0"
+                            max="100"
+                            placeholder="Put Health Score..."/>
+                        {errors.healthScore && <p>{errors.healthScore}</p>}
+                    </div>
 
-                <div>
-                    <label>Steps: </label>
-                    <textarea 
-                        type="text" 
-                        value={form.steps.step} 
-                        onChange={changeHandler} 
-                        name="steps"
-                        placeholder="Put yours steps..."/>
-                    {errors.steps && <p>{errors.steps}</p>}
+                    
+                    <div>
+                        <label>Image: </label>
+                        <input 
+                            type="text" 
+                            value={form.image} 
+                            onChange={(e) =>changeHandler(e)} 
+                            name="image"
+                            placeholder="Put image..."/>
+                        {errors.image && <p>{errors.image}</p>}
+                    </div>
+                    <div>
+                        <label>Steps: </label>
+                        <textarea 
+                            type="text" 
+                            value={form.steps.step} 
+                            onChange={(e) =>changeHandler(e)} 
+                            name="steps"
+                            placeholder="Put yours steps..."/>
+                        {errors.steps && <p>{errors.steps}</p>}
+                    </div>
                 </div>
-                
                 <div>
-                    <label>Image: </label>
-                    <input 
-                        type="text" 
-                        value={form.image} 
-                        onChange={changeHandler} 
-                        name="image"
-                        placeholder="Put image..."/>
-                    {errors.image && <p>{errors.image}</p>}
-                </div>
-                
-                <div>
+                    <div>
+                    <label>Diets: </label>
+                            <div>
+                                {diets.map((e) => (
+                                    <div>
+                                        <input
+                                        type="checkbox"
+                                        value={e.name}
+                                        name={e.name}
+                                        onChange={(e) => handlerCheck(e)}
+                                        />
+                                        <label>{e.name}</label>
+                                    </div>
+                                ))}
+                            </div>
+                    </div>
                     <button
                         disabled={errors.name || errors.dishSummary || errors.healthScore || errors.steps || errors.image || errors.diets}
                         type="submit"

@@ -6,7 +6,7 @@ import { ORDER_BY_NAME,
         GET_DIETS,
         GET_RECIPE_NAME,
         ORDEN_BY_SCORE,
-         } from './types.js';
+} from './types.js';
 import axios from "axios";
 
 // TODAS LAS RECETAS
@@ -56,6 +56,8 @@ export const recipeByName = (name) => {
         }
     }
 }
+
+
 
 //FILTRADO POR TIPO DE DIETA
 export const filterRecipesByDiet = (payload) => {
