@@ -4,19 +4,21 @@ import { useSelector } from 'react-redux';
 
 const CardsContainer = () => {
     
-    const users = useSelector(state => state.users);
+    const recipes = useSelector(state => state.recipes);
     
     return(
         <div className={style.container}>
             {
-                users.map(user => {
+                recipes.map(recipe => {
+                    
                     return <Card 
-                        name={user.name}
-                        image={user.image}
-                        dishSummary={user.dishSummary}
-                        healthScore={user.healthScore}
-                        steps={user.steps}
-                        diets={user.diets}
+                        id={recipe.id}
+                        name={recipe.name}
+                        image={recipe.image}
+                        dishSummary={recipe.dishSummary}
+                        healthScore={recipe.healthScore}
+                        steps={recipe.steps}
+                        diets={recipe.diets}
                     />
                     
                 })

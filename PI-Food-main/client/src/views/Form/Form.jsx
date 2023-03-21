@@ -5,35 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { recipeByName } from "../../redux/actions";
 import { postRecipes, getAllDiets } from "../../redux/actions";
 
+//NECESITO REPLANTEAR LAS VALIDACIONES YA QUE NO FUNCIONAN BIEN
+const validate = (form) => {
+    let validateImg = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
+    const errors = {};
+    if (form.name === "" || /[^a-zA-Z, ]/g.test(form.name)) {
+        errors.name = "The name can not have symbols!";
+    } else if (form.dishSummary?.length < 10){
+        errors.dishSummary = "You need to add info to the summary";
+    } else if (form.healthScore === "" || form.healthScore < 10 || form.healthScore > 100){
+        errors.healthScore = "Score can't be less than 10, or be higher than 100";
+    } else if (!validateImg.test(form.image)){
+        errors.image = "This is not a valid URL";
+    } else if (!form.steps.length) {
+        errors.steps = "You need to add a step";
+    } else if (!form.diets.length) {
+        errors.diets = "You need to add a diet";
+    }
+    return errors;
+}
 const Form = () => {
     
-    //NECESITO REPLANTEAR LAS VALIDACIONES YA QUE NO FUNCIONAN BIEN
-    /* let validateImg = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
-    const validate = (form) => {
-        const errors = {};
-        if (form.name === "" || /[^a-zA-Z, ]/g.test(form.name)) {
-            errors.name = "The name can not have symbols!";
-        } else if (form.dishSummary?.length < 10){
-            errors.dishSummary = "You need to add info to the summary";
-        } else if (form.healthScore === "" || form.healthScore < 10 || form.healthScore > 100){
-            errors.healthScore = "Score can't be less than 10, or be higher than 100";
-        } else if (!validateImg.test(form.image)){
-            errors.image = "This is not a valid URL";
-        } else if (!form.steps.length) {
-            errors.steps = "You need to add a step";
-        } else if (!form.diets.length) {
-            errors.diets = "You need to add a diet";
-        }
-        return errors;
-    } */
-    const [errors, setErrors] = useState({
-        /* name: "",
-        dishSummary: "",
-        healthScore: "",
-        image: "",
-        steps: [],
-        diets: [], */
-    })
+    const [errors, setErrors] = useState({})
 
     const [form, setForm] = useState({
         name: "",
@@ -53,10 +46,10 @@ const Form = () => {
         const property = event.target.name
         const value = event.target.value
 
-        /* setErrors(validate({
+        setErrors(validate({
             ...form,
             [property]: value 
-        })) */
+        }))
         setForm({ 
             ...form,
             [property]: value 
@@ -88,7 +81,6 @@ const Form = () => {
             healthScore: "",
             steps: "",
         })
-        /* history.push("/home") */
         navigate('/home')
     }
 
@@ -114,7 +106,7 @@ const Form = () => {
 
                     <div>
                         <label>Summary: </label>
-                        <input 
+                        <textarea 
                             type="text" 
                             value={form.dishSummary} 
                             onChange={(e) =>changeHandler(e)} 
@@ -127,11 +119,11 @@ const Form = () => {
                         <label>Health Score: </label>
                         <input 
                             id="score"
-                            type="text" 
+                            type="number" 
                             value={form.healthScore} 
                             onChange={(e) =>changeHandler(e)} 
                             name="healthScore" 
-                            min="0"
+                            min="10"
                             max="100"
                             placeholder="Put Health Score..."/>
                         {errors.healthScore && <p>{errors.healthScore}</p>}
@@ -141,7 +133,7 @@ const Form = () => {
                     <div>
                         <label>Image: </label>
                         <input 
-                            type="text" 
+                            type="url" 
                             value={form.image} 
                             onChange={(e) =>changeHandler(e)} 
                             name="image"

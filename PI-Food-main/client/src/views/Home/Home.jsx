@@ -69,6 +69,7 @@ const Home = () => {
     return(
         <div>
             <div>
+                <SearchBar />
                 <button onClick={(e) => {
                     handleRefresh(e);
                 }}>Refresh</button>
@@ -77,7 +78,6 @@ const Home = () => {
                     <button>Create new recipe</button>
                 </Link>
 
-                <SearchBar />
             </div>
             <div>
                 <select onChange={(e) => handlerSortByName(e)}>

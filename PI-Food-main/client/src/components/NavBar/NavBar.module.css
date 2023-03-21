@@ -1,7 +1,67 @@
+body {
+    background-image: url("https://www.cucinare.tv/wp-content/uploads/2020/05/10-tips-para-cocinar-como-un-profesional.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+}
 .mainContainer{
-    display: flex;
+    /* idsplay: flex;
     flex-direction: row;
     justify-content: space-around;
     border-radius: 15px;
     border: 1px solid black;
+    text-decoration: none;
+    padding-left: 25px;
+    text-transform: uppercase;
+    color: #333;
+	text-shadow: 1px 1px 1px #ccc; */
+
+    background: rgba(66, 31, 130, 0.227);
+    box-shadow: 0 1px 10px 0 rgba(10, 20, 38, 0.523);
+    backdrop-filter: blur( 11px );
+    -webkit-backdrop-filter: blur( 11px );
+    height: 40px;
+    
+    display: flex;
+    justify-content :space-between;
+    align-items: center;
+}
+
+.home {
+    width: 100px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: rgb(9, 9, 9);
+    font-size: 20px;
+    
+    cursor: pointer;
+}
+
+.home:hover {
+    background: rgb(100, 87, 125);
+    transition: 1s;
+    color: black;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.newRecipe{
+    width: 150px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.newRecipe:hover {
+    background: rgb(100, 87, 125);
+    transition: 0.8s;
+    color: black;
+    border-radius: 5px 0px 0px 5px;
+    transition: 1s;
 }
