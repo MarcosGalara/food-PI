@@ -37,7 +37,7 @@ const postRecipe = async (objRecipe) => {
             image,
             dishSummary,
             healthScore,
-            steps
+            steps: [steps]
         }
         const createRecipe = await Recipe.create(recipe);
         
@@ -49,10 +49,12 @@ const postRecipe = async (objRecipe) => {
             })
             
             await createRecipe.addDiets(diet[0].id)
-        }
+        } 
         return createRecipe;
     } catch (error) {
+        
         return error;
+
     }
 }
 

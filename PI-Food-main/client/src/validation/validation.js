@@ -33,11 +33,13 @@ const validate = (form) => {
 
     if (!form.steps.trim().length) {
         errors.steps = "The steps is required";
+    } else if (form.steps.length < 2 || form.steps.length > 10) {
+        errors.steps = "You must enter between one step and less than 10"
     }
-
+    
     if (!form.diets) {
         errors.diets = "You need to add a diet";
-    }
+    }   
     
     return errors;
 }

@@ -6,12 +6,14 @@ import { ORDER_BY_NAME,
         GET_DIETS,
         GET_RECIPE_NAME,
         ORDEN_BY_SCORE,
+        LOADING,
 } from './types.js';
 import axios from "axios";
 
 // TODAS LAS RECETAS
 export const getRecipes = () => {
     return async function (dispatch) {
+        dispatch({ type: LOADING })
         const apiData = await axios.get('http://localhost:3001/recipes');
         const users = apiData.data;
         dispatch({ type: GET_RECIPES, payload: users })
@@ -30,6 +32,7 @@ export const getRecipeById = (id) =>{
 //TODAS LAS DIETAS
 export const getAllDiets = () => {
     return async function (dispatch) {
+        dispatch({ type: LOADING })
         const apiData = await axios.get('http://localhost:3001/diets');
         const diets = apiData.data;
         dispatch({ type: GET_DIETS, payload: diets })

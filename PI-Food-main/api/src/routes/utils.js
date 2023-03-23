@@ -29,13 +29,13 @@ const simplifyContent = (recipes) => {
         array.push(recipe)
 
     }
-    console.log(array)
+    
     return array;
 }
 
 const extractDiets = (recipes) => {
     let diets = []
-    console.log(recipes[0]);
+    
     recipes.map(r => {
         r.diets.map(d => {
             diets.push(d)

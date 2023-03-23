@@ -22,4 +22,3 @@ function App() {
 }
 
 export default App;
-//https://api.spoonacular.com/recipes/complexSearch?apiKey=703de24e59f5471cb2802864fa99a835&number=100&addRecipeInformation=true

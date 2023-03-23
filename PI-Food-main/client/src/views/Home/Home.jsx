@@ -12,13 +12,16 @@ import Paginado from "../../components/Paginado/Paginado.jsx";
 import Card from "../../components/Card/Card.jsx";
 import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 import "./Home.css"
+import Loading from "../../components/Loading/Loading.jsx";
 
 
 
 const Home = () => {
 
+    //HOOKS
     const dispatch = useDispatch();
     const allRecipes = useSelector((state) => state.recipes)
+    const cargando = useSelector((state) => state.loading);
     // ---------------------------PAGINADO-------------------------------------
     const [, setOrden] = useState("asc")
     const [currentPage, setCurrentPage] = useState(1);
@@ -101,41 +104,47 @@ const Home = () => {
                     <option value="whole 30">Whole 30</option>
                 </select>
             </div>
-            <div>
-                <Paginado 
-                recipesPerPage = { recipesPerPage }
-                allRecipes = {allRecipes.length}
-                paginado = {paginado}
-                />
-            </div>
-            <div className="container">
-                {currentRecipes?.map((e) => {
-                    return(
-                        
+            {cargando ? (
+                <Loading />
+            ):(
+                <div>
+                    <div>
+                    <Paginado 
+                    recipesPerPage = { recipesPerPage }
+                    allRecipes = {allRecipes.length}
+                    paginado = {paginado}
+                    />
+                </div>
+                <div className="container">
+                    {currentRecipes?.map((e) => {
+                        return(
                             <Card 
-                                key={e.id}
-                                id={e.id}
-                                name={e.name}
-                                image={e.image
-                                    ? e.image 
-                                    : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg" alt="Error"/>}
+                            key={e.id}
+                            id={e.id}
+                            name={e.name}
+                            image={e.image
+                                ? e.image 
+                                : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg" alt="Error"/>}
                                 diets={e.diets}
-                            />
-                        
-                    )
-                })}
+                                />
+                                )
+                                
+                            })}
+                                
+                </div>
+                <div>
+                    <Paginado 
+                    recipesPerPage = { recipesPerPage }
+                    allRecipes = {allRecipes.length}
+                    paginado = {paginado}
+                    />
+                </div>
+                    
+                
             </div>
-            <div>
-                <Paginado 
-                recipesPerPage = { recipesPerPage }
-                allRecipes = {allRecipes.length}
-                paginado = {paginado}
-                />
-            </div>
-            
-        </div>
-
-    )
-}
+                )}
+                </div>
+        )
+    }
 
 export default Home;

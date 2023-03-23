@@ -79,6 +79,7 @@ router.get('/', async (req, res) =>{
 router.post("/", async (req, res) =>{
     try {
         const objRecipe = req.body;
+        console.log(objRecipe);
         if(!objRecipe) res.status(404).send('Missing info')
         const newRecipe = await postRecipe(objRecipe)
 

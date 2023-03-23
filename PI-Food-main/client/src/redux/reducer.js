@@ -8,29 +8,43 @@ import {
     FILTER_BY_CREATED,
     ORDER_BY_NAME,
     ORDEN_BY_SCORE,
+    LOADING,
 } from "./types.js";
 
 
 const initialState ={
     recipes: [],
     filterRecipes: [], //estado aux para filtrar
-    userDetail: [],
+    recipeDetail: [],
     diets: [],
+    loading: false,
 };
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+
         case GET_RECIPES:
             return {
                 ...state,
                 recipes: action.payload,
-                filterRecipes: action.payload
+                filterRecipes: action.payload,
+                loading: false,
             };
+
+        case LOADING:
+            return{ ...state, loading: true }
+            
+        case GET_RECIPE_NAME:
+            return{
+                ...state,
+                recipes: action.payload
+            }
 
         case GET_RECIPE_ID:
             return {
                 ...state,
-                userDetail: action.payload,
+                recipeDetail: action.payload,
+                loading: false
             }
 
         case GET_DIETS:
@@ -44,11 +58,6 @@ const rootReducer = (state = initialState, action) => {
                 ...state
             }
 
-        case GET_RECIPE_NAME:
-            return{
-                ...state,
-                recipes: action.payload
-            }
         
         case FILTER_BY_DIET:
             const allRecipes = state.filterRecipes;

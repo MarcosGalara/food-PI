@@ -55,7 +55,11 @@ const Form = () => {
                 ...form,
                 diets: [...form.diets, e.target.value],
             })
-            setCount(count + 1)
+        }else if(!e.target.checked){
+            setForm({
+                ...form,
+                diets: form.diets.filter(diet => diet !== e.target.value)
+            })
         }
     }
 
@@ -146,15 +150,15 @@ const Form = () => {
                             <div className="options">
                                 {diets.map((e) => (
                                     <div>
+                                        <label>{e.name}</label>
                                         <input
                                         type="checkbox"
                                         value={e.name}
                                         name={e.name}
                                         onChange={(e) => handlerCheck(e)}
-                                        disabled={count >= 3? true : false}
+                                        disabled={form.diets.length >= 3? true : false}
                                         />
                                         {errors.diets && <strong>{errors.diets}</strong>}
-                                        <label>{e.name}</label>
                                         
                                     </div>
                                 ))}
