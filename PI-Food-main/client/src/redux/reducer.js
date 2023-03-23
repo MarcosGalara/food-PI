@@ -13,7 +13,7 @@ import {
 
 const initialState ={
     recipes: [],
-    filterRecipes: [],
+    filterRecipes: [], //estado aux para filtrar
     userDetail: [],
     diets: [],
 };
@@ -82,13 +82,13 @@ const rootReducer = (state = initialState, action) => {
                 return 0
             }) 
             : state.recipes.sort((a, b) =>{
-                if(b.name > a.name) return -1;
-                if(a.name >  b.name) return 1;
+                if(a.name > b.name) return -1;
+                if(b.name >  a.name) return 1;
                 return 0
             })
             return {
                 ...state,
-                recipes: sortedArray
+                filterRecipes: sortedArray
             }
         
         case ORDEN_BY_SCORE:
@@ -99,13 +99,13 @@ const rootReducer = (state = initialState, action) => {
                 return 0
             }) 
             : state.recipes.sort((a, b) =>{
-                if(b.healthScore > a.healthScore ) return -1;
-                if(a.healthScore > b.healthScore ) return 1;
+                if(a.healthScore > b.healthScore ) return -1;
+                if(b.healthScore > a.healthScore ) return 1;
                 return 0
             })
             return {
                 ...state,
-                recipes: sortedArray1
+                filterRecipes: sortedArray1
             }
 
         default:

@@ -2,32 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { recipeByName } from "../../redux/actions";
 import { postRecipes, getAllDiets } from "../../redux/actions";
+import validate from "../../validation/validation.js";
+import './Form.css'
+
 
 //NECESITO REPLANTEAR LAS VALIDACIONES YA QUE NO FUNCIONAN BIEN
-const validate = (form) => {
-    let validateImg = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
-    const errors = {};
-    if (form.name === "" || /[^a-zA-Z, ]/g.test(form.name)) {
-        errors.name = "The name can not have symbols!";
-    } else if (form.dishSummary?.length < 10){
-        errors.dishSummary = "You need to add info to the summary";
-    } else if (form.healthScore === "" || form.healthScore < 10 || form.healthScore > 100){
-        errors.healthScore = "Score can't be less than 10, or be higher than 100";
-    } else if (!validateImg.test(form.image)){
-        errors.image = "This is not a valid URL";
-    } else if (!form.steps.length) {
-        errors.steps = "You need to add a step";
-    } else if (!form.diets.length) {
-        errors.diets = "You need to add a diet";
-    }
-    return errors;
-}
+
 const Form = () => {
     
-    const [errors, setErrors] = useState({})
-
+    //HOOKS
+    const dispatch = useDispatch();
+    const diets = useSelector((state) => state.diets)
+    let navigate = useNavigate();
+    
+    //STATES
     const [form, setForm] = useState({
         name: "",
         dishSummary: "",
@@ -37,11 +26,15 @@ const Form = () => {
         steps: "",
     })
 
-    const dispatch = useDispatch();
-    //para que cuando envie la receta creada me envie a la ruta HOME
-    let navigate = useNavigate();
-    const diets = useSelector((state) => state.diets)
-
+    const [errors, setErrors] = useState({})
+    const [count, setCount] = useState(0)
+    
+    //EFFECTS
+    useEffect(() => {
+        dispatch(getAllDiets())
+    },[dispatch])
+    
+    //FUNCTIONS
     const changeHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
@@ -56,16 +49,13 @@ const Form = () => {
         })
     }
 
-    useEffect(() => {
-        dispatch(getAllDiets())
-    },[dispatch])
-    
     const handlerCheck = (e) => {
         if(e.target.checked){
             setForm({
                 ...form,
                 diets: [...form.diets, e.target.value],
             })
+            setCount(count + 1)
         }
     }
 
@@ -88,11 +78,11 @@ const Form = () => {
     return(
         <div>
             <Link to= '/home'>
-                <button>Return</button>
+                <button className="button">Return</button>
             </Link>
-            <h1>Create your own Recipe</h1>
-            <form onSubmit={(e) =>submitHandler(e)}>
-                <div>
+            <h1 id="title">Create your own Recipe</h1>
+            <form onSubmit={(e) =>submitHandler(e)} className="Formulario">
+                <div className="inputs">
                     <div>
                         <label>Name: </label>
                         <input 
@@ -101,18 +91,18 @@ const Form = () => {
                             onChange={(e) =>changeHandler(e)} 
                             name="name" 
                             placeholder="Write Recipe name..."/>
-                        {errors.name && <p>{errors.name}</p>}
+                        {errors.name && <strong>{errors.name}</strong>}
                     </div>
 
                     <div>
                         <label>Summary: </label>
-                        <textarea 
+                        <input 
                             type="text" 
                             value={form.dishSummary} 
                             onChange={(e) =>changeHandler(e)} 
                             name="dishSummary" 
                             placeholder="Detail your Recipe..."/>
-                        {errors.dishSummary && <p>{errors.dishSummary}</p>}
+                        {errors.dishSummary && <strong>{errors.dishSummary}</strong>}
                     </div>
 
                     <div>
@@ -123,10 +113,8 @@ const Form = () => {
                             value={form.healthScore} 
                             onChange={(e) =>changeHandler(e)} 
                             name="healthScore" 
-                            min="10"
-                            max="100"
-                            placeholder="Put Health Score..."/>
-                        {errors.healthScore && <p>{errors.healthScore}</p>}
+                            />
+                        {errors.healthScore && <strong>{errors.healthScore}</strong>}
                     </div>
 
                     
@@ -138,7 +126,7 @@ const Form = () => {
                             onChange={(e) =>changeHandler(e)} 
                             name="image"
                             placeholder="Put image..."/>
-                        {errors.image && <p>{errors.image}</p>}
+                        {errors.image && <strong>{errors.image}</strong>}
                     </div>
                     <div>
                         <label>Steps: </label>
@@ -148,13 +136,14 @@ const Form = () => {
                             onChange={(e) =>changeHandler(e)} 
                             name="steps"
                             placeholder="Put yours steps..."/>
-                        {errors.steps && <p>{errors.steps}</p>}
+                        {errors.steps && <strong>{errors.steps}</strong>}
                     </div>
                 </div>
-                <div>
+                
+                <div className="dietsType">
                     <div>
                     <label>Diets: </label>
-                            <div>
+                            <div className="options">
                                 {diets.map((e) => (
                                     <div>
                                         <input
@@ -162,8 +151,11 @@ const Form = () => {
                                         value={e.name}
                                         name={e.name}
                                         onChange={(e) => handlerCheck(e)}
+                                        disabled={count >= 3? true : false}
                                         />
+                                        {errors.diets && <strong>{errors.diets}</strong>}
                                         <label>{e.name}</label>
+                                        
                                     </div>
                                 ))}
                             </div>
@@ -171,6 +163,7 @@ const Form = () => {
                     <button
                         disabled={errors.name || errors.dishSummary || errors.healthScore || errors.steps || errors.image || errors.diets}
                         type="submit"
+                        className="button"
                     >Create Recipe</button>
                 </div>
 

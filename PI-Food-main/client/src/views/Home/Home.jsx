@@ -9,9 +9,9 @@ import {
     orderByScore,
     } from "../../redux/actions.js";
 import Paginado from "../../components/Paginado/Paginado.jsx";
-import { Link  } from "react-router-dom";
 import Card from "../../components/Card/Card.jsx";
 import SearchBar from "../../components/SearchBar/SearchBar.jsx";
+import "./Home.css"
 
 
 
@@ -20,9 +20,9 @@ const Home = () => {
     const dispatch = useDispatch();
     const allRecipes = useSelector((state) => state.recipes)
     // ---------------------------PAGINADO-------------------------------------
-    const [orden, setOrden] = useState("asc")
+    const [, setOrden] = useState("asc")
     const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage, setRecipesPerPage] = useState(9);
+    const [recipesPerPage] = useState(9);
     const indexOfLastRecipe = currentPage * recipesPerPage; // 9
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage; // 0
     const currentRecipes = allRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
@@ -70,17 +70,12 @@ const Home = () => {
         <div>
             <div>
                 <SearchBar />
-                <button onClick={(e) => {
-                    handleRefresh(e);
-                }}>Refresh</button>
-
-                <Link to="/form">
-                    <button>Create new recipe</button>
-                </Link>
-
+                    <button className="refButton" onClick={(e) => {
+                        handleRefresh(e);
+                    }}>Refresh</button>
             </div>
-            <div>
-                <select onChange={(e) => handlerSortByName(e)}>
+            <div className="filters">
+                <select className="eachFilter" onChange={(e) => handlerSortByName(e)}>
                     <option value="asc">A - Z</option>
                     <option value="desc">Z - A</option>
                 </select>
@@ -113,20 +108,20 @@ const Home = () => {
                 paginado = {paginado}
                 />
             </div>
-            <div>
+            <div className="container">
                 {currentRecipes?.map((e) => {
                     return(
-                        <div>
+                        
                             <Card 
                                 key={e.id}
                                 id={e.id}
                                 name={e.name}
                                 image={e.image
                                     ? e.image 
-                                    : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg"/>}
+                                    : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg" alt="Error"/>}
                                 diets={e.diets}
                             />
-                        </div>
+                        
                     )
                 })}
             </div>
