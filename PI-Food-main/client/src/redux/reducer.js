@@ -9,6 +9,8 @@ import {
     ORDER_BY_NAME,
     ORDEN_BY_SCORE,
     LOADING,
+    CLEAR_DETAIL,
+    FILTERS
 } from "./types.js";
 
 
@@ -18,6 +20,7 @@ const initialState ={
     recipeDetail: [],
     diets: [],
     loading: false,
+    render: true
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -58,6 +61,61 @@ const rootReducer = (state = initialState, action) => {
                 ...state
             }
 
+        case FILTERS:
+            let asd = state.filterRecipes;
+
+            if(action.payload.origin === "created"){
+                asd = asd.filter(el => el.createdInDb)
+            }
+            else if(action.payload.origin === "api"){
+                asd.filter(el => !el.createdInDb)
+            }
+           
+            if(action.payload.diets !== "All"){
+                asd = asd.filter((el) => 
+                el.diets?.includes(action.payload.diets)
+            )
+            }
+
+            if(action.payload.abc === "asc"){
+                asd.sort((a, b)=>{
+                    if(a.name > b.name) return 1;
+                    if(b.name > a.name) return -1;
+                    return 0
+                }) 
+            }else if(action.payload.abc === "desc"){
+                asd.sort((a, b) =>{
+                    if(a.name > b.name) return -1;
+                    if(b.name >  a.name) return 1;
+                    return 0
+                })
+            }
+
+            if(action.payload.score === "Higher Score"){
+                asd.sort((a, b)=>{
+                    if(a.healthScore > b.healthScore ) return -1;
+                    if(b.healthScore > a.healthScore ) return 1;
+                    return 0
+                }) 
+            } else if(action.payload.score === "Lower Score"){
+                asd.sort((a, b) =>{
+                    if(a.healthScore > b.healthScore ) return 1;
+                    if(b.healthScore > a.healthScore ) return -1;
+                    return 0
+                })
+            }
+
+            return{
+                ...state,
+                recipes: asd
+            }
+
+        case CLEAR_DETAIL: 
+            return{
+                ...state,
+                recipeDetail: []
+            }
+
         
         case FILTER_BY_DIET:
             const allRecipes = state.filterRecipes;
@@ -92,7 +150,7 @@ const rootReducer = (state = initialState, action) => {
             }) 
             : state.recipes.sort((a, b) =>{
                 if(a.name > b.name) return -1;
-                if(b.name >  a.name) return 1;
+                if(b.name > a.name) return 1;
                 return 0
             })
             return {

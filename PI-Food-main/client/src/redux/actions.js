@@ -7,6 +7,8 @@ import { ORDER_BY_NAME,
         GET_RECIPE_NAME,
         ORDEN_BY_SCORE,
         LOADING,
+        CLEAR_DETAIL,
+        FILTERS
 } from './types.js';
 import axios from "axios";
 
@@ -28,6 +30,12 @@ export const getRecipeById = (id) =>{
         dispatch({ type: GET_RECIPE_ID, payload: user})
     }
 }
+
+
+export const clearDetail = () =>{
+    return { type: CLEAR_DETAIL }
+}
+
 
 //TODAS LAS DIETAS
 export const getAllDiets = () => {
@@ -90,6 +98,13 @@ export const orderByName = (payload) => {
 export const orderByScore = (payload) => {
     return{
         type: ORDEN_BY_SCORE,
+        payload
+    }
+}
+
+export const filters = (payload) => {
+    return{
+        type: FILTERS,
         payload
     }
 }

@@ -31,15 +31,20 @@ const validate = (form) => {
         errors.image = "This is not a valid URL. It must be a JPG, GIF or PNG image";
     } 
 
-    if (!form.steps.trim().length) {
-        errors.steps = "The steps is required";
-    } else if (form.steps.length < 2 || form.steps.length > 10) {
-        errors.steps = "You must enter between one step and less than 10"
+    if (!form.step.trim().length) {
+        errors.step = "The steps is required";
+    } else if (form.step.length < 5 || form.step.length > 40) {
+        errors.step = "You must describe the step to follow with at least 5 to 40 characters"
+    }
+
+    
+    if(form.steps.length < 5) {
+        errors.steps = "You need to add at less 5 steps"
     }
     
     if (!form.diets) {
         errors.diets = "You need to add a diet";
-    }   
+    }
     
     return errors;
 }

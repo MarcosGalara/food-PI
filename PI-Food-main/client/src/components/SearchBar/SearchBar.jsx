@@ -14,11 +14,12 @@ const SearchBar = () => {
     }
 
     const handleSubmit = () =>{
-        dispatch(recipeByName(name))
+        dispatch(recipeByName(name));
+        setName("");
     }
     return(
         <div className={style.SearchContainer}>
-            <input className={style.bar} type="text" placeholder="Find your recipe..." onChange={(e) => handleInputChange(e)}  />
+            <input className={style.bar} type="text" placeholder="Find your recipe...🔍" onChange={(e) => handleInputChange(e)}  />
             <button className={style.search} type="submit" onClick={(e) => handleSubmit(e)}>Search</button>
         </div>
     )

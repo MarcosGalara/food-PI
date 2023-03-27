@@ -4,6 +4,7 @@ const simplifyContent = (recipes) => {
     
     for (const key in recipes) {
         const recipe = {}
+        recipe.id = recipes[key].id
         recipe.name = recipes[key].title
         recipe.image = recipes[key].image
         recipe.dishSummary = recipes[key].summary

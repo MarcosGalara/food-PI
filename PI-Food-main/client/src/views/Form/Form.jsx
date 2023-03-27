@@ -23,11 +23,19 @@ const Form = () => {
         diets: [],
         image: "",
         healthScore: "",
-        steps: "",
+        step: "",
+        steps: []
     })
 
-    const [errors, setErrors] = useState({})
-    const [count, setCount] = useState(0)
+    const [errors, setErrors] = useState({
+        name : "The name is required",
+        dishSummary : "The summary is required",
+        healthScore : "The health score is required",
+        image : "The image is required",
+        steps : "The steps is required",
+        diets : "Need to add between 1 to 3 types of diets",
+        step: "Need to add a step"
+    })
     
     //EFFECTS
     useEffect(() => {
@@ -35,6 +43,8 @@ const Form = () => {
     },[dispatch])
     
     //FUNCTIONS
+
+
     const changeHandler = (event) => {
         const property = event.target.name
         const value = event.target.value
@@ -73,28 +83,53 @@ const Form = () => {
             diets: [],
             image: "",
             healthScore: "",
-            steps: "",
+            step: "",
+            steps: [],
         })
         navigate('/home')
+    }
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        if(form.step !== "" && form.step.length > 4 && form.step.length < 41){
+            let newItem = form[e.target.name];
+        newItem.push(form.step);
+        setForm({ ...form, steps: newItem });
+        setForm({ ...form, step: "" })
+        }
+    }
+
+    const handleDelete = (e) => {
+        
+        e.preventDefault();
+        let newItem = form.steps;
+
+        const index = e.target.name
+        newItem.splice(index, 1);
+        setForm({ ...form, steps: newItem });
+
     }
 
 
     return(
         <div>
-            <Link to= '/home'>
-                <button className="button">Return</button>
-            </Link>
-            <h1 id="title">Create your own Recipe</h1>
+            <div className="buttonReturn">
+                <Link to= '/home'>
+                    <button className="button">Return</button>
+                </Link>
+            </div>
+            <h1 id="title">Create your own Recipe !</h1>
             <form onSubmit={(e) =>submitHandler(e)} className="Formulario">
                 <div className="inputs">
                     <div>
-                        <label>Name: </label>
+                        <label>Recipe:  </label>
                         <input 
                             type="text" 
                             value={form.name} 
                             onChange={(e) =>changeHandler(e)} 
                             name="name" 
                             placeholder="Write Recipe name..."/>
+                            
                         {errors.name && <strong>{errors.name}</strong>}
                     </div>
 
@@ -117,11 +152,12 @@ const Form = () => {
                             value={form.healthScore} 
                             onChange={(e) =>changeHandler(e)} 
                             name="healthScore" 
+                            min="0"
+                            max="100"
                             />
                         {errors.healthScore && <strong>{errors.healthScore}</strong>}
                     </div>
 
-                    
                     <div>
                         <label>Image: </label>
                         <input 
@@ -132,17 +168,40 @@ const Form = () => {
                             placeholder="Put image..."/>
                         {errors.image && <strong>{errors.image}</strong>}
                     </div>
+            
                     <div>
                         <label>Steps: </label>
-                        <textarea 
+                        <input
                             type="text" 
-                            value={form.steps.step} 
+                            value={form.step} 
                             onChange={(e) =>changeHandler(e)} 
-                            name="steps"
+                            name="step"
                             placeholder="Put yours steps..."/>
-                        {errors.steps && <strong>{errors.steps}</strong>}
+                    {errors.step && <strong>{errors.step}</strong>}
                     </div>
+                        <button
+
+                        className="buttonStep"
+                        name="steps"
+                        onClick={(e) => handleClick(e)}
+                        >
+                        Add Step
+                        </button>
                 </div>
+                    <div className="sqaureStep"> 
+                    {form.steps?.map((e,index) => (
+                        <div className="step">
+                            <p>Step: {index+1}</p>
+                            <button
+                            className="crossBtn"
+                            name={index} 
+                            onClick = {(e) => handleDelete(e)}
+                            >X</button>
+                        </div>
+                        
+                    ))}
+                    </div>
+                
                 
                 <div className="dietsType">
                     <div>
@@ -150,22 +209,21 @@ const Form = () => {
                             <div className="options">
                                 {diets.map((e) => (
                                     <div>
-                                        <label>{e.name}</label>
                                         <input
                                         type="checkbox"
                                         value={e.name}
                                         name={e.name}
                                         onChange={(e) => handlerCheck(e)}
-                                        disabled={form.diets.length >= 3? true : false}
+                                        disabled={form.diets.length >= 3 && !form.diets.includes(e.name)? true : false}
                                         />
-                                        {errors.diets && <strong>{errors.diets}</strong>}
-                                        
+                                        <label>{e.name}</label>
                                     </div>
                                 ))}
+                                {errors.diets && <strong>{errors.diets}</strong>}
                             </div>
                     </div>
                     <button
-                        disabled={errors.name || errors.dishSummary || errors.healthScore || errors.steps || errors.image || errors.diets}
+                        disabled={errors.name || errors.dishSummary || errors.healthScore || errors.step || errors.image || errors.diets }
                         type="submit"
                         className="button"
                     >Create Recipe</button>

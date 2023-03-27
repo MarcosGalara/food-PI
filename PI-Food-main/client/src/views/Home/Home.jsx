@@ -7,6 +7,7 @@ import {
     filterCreated,
     orderByName,
     orderByScore,
+    filters
     } from "../../redux/actions.js";
 import Paginado from "../../components/Paginado/Paginado.jsx";
 import Card from "../../components/Card/Card.jsx";
@@ -22,8 +23,14 @@ const Home = () => {
     const dispatch = useDispatch();
     const allRecipes = useSelector((state) => state.recipes)
     const cargando = useSelector((state) => state.loading);
+    const [filter, setFilter] = useState({
+        abc: "default",
+        score: "default",
+        origin : "All",
+        diets: "All"
+    })
     // ---------------------------PAGINADO-------------------------------------
-    const [, setOrden] = useState("asc")
+    const [flag, setFlag] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
     const [recipesPerPage] = useState(9);
     const indexOfLastRecipe = currentPage * recipesPerPage; // 9
@@ -35,24 +42,29 @@ const Home = () => {
     }
 
     const handlerFilterDiet = (e) => {
-        dispatch(filterRecipesByDiet(e.target.value))
-        setCurrentPage(1);
+        setFilter({...filter,diets:e.target.value})
+        //dispatch(filterRecipesByDiet(e.target.value))
+        //setCurrentPage(1);
     }
 
     const handlerFilterCreated = (e) => {
-        dispatch(filterCreated(e.target.value))
+        setFilter({...filter,origin:e.target.value})
+        //setCurrentPage(1);
+        //dispatch(filterCreated(e.target.value))
     }
 
     const handlerSortByName = (e) => {
-        dispatch(orderByName(e.target.value))
-        setCurrentPage(1);
-        setOrden(`${e.target.value}`)
+        setFilter({...filter,abc:e.target.value})
+        //dispatch(orderByName(e.target.value))
+        //setCurrentPage(1);
+        //setOrden(`${e.target.value}`)
     }
 
     const handlerSortByScore = (e) => {
-        dispatch(orderByScore(e.target.value))
-        setCurrentPage(1);
-        setOrden(`${e.target.value}`)
+        setFilter({...filter,score:e.target.value})
+        //dispatch(orderByScore(e.target.value))
+        //setCurrentPage(1);
+       // setOrden(`${e.target.value}`)
     } 
     //--------------------------------------------------------------------------------------------
     //cuando se monta, hago el dispatch
@@ -69,6 +81,17 @@ const Home = () => {
         
     }
 
+    const handleFilters = (event) =>{
+        event.preventDefault();
+        dispatch(filters(filter))
+        if(flag){
+            setFlag({...flag,flag:false})
+        }else{
+            setFlag({...flag,flag:true})
+        }
+        setCurrentPage(1);
+    }
+
     return(
         <div>
             <div>
@@ -79,10 +102,12 @@ const Home = () => {
             </div>
             <div className="filters">
                 <select className="eachFilter" onChange={(e) => handlerSortByName(e)}>
+                    <option value="default">-</option>
                     <option value="asc">A - Z</option>
                     <option value="desc">Z - A</option>
                 </select>
                 <select onChange={(e) => handlerSortByScore(e)}>
+                    <option value="default">-</option>
                     <option value="Higher Score">Highest Score</option>
                     <option value="Lower Score">Lowest Score</option>
                 </select>
@@ -103,6 +128,9 @@ const Home = () => {
                     <option value="fodmap friendly">Low Fodmap</option>
                     <option value="whole 30">Whole 30</option>
                 </select>
+                <button
+                onClick = {(e) => handleFilters(e)}
+                >Aplicar filtros</button>
             </div>
             {cargando ? (
                 <Loading />
@@ -122,10 +150,8 @@ const Home = () => {
                             key={e.id}
                             id={e.id}
                             name={e.name}
-                            image={e.image
-                                ? e.image 
-                                : <img src="https://domf5oio6qrcr.cloudfront.net/medialibrary/10878/5e9a62cd-37c3-4f12-ac08-4d4e0a71fafa.jpg" alt="Error"/>}
-                                diets={e.diets}
+                            image={e.image}
+                            diets={e.diets}
                                 />
                                 )
                                 

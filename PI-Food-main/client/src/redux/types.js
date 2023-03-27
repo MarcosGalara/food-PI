@@ -8,3 +8,5 @@ export const FILTER_BY_CREATED = "FILTER_BY_CREATED";
 export const ORDER_BY_NAME = "ORDER_BY_NAME";
 export const ORDEN_BY_SCORE = "ORDEN_BY_SCORE";
 export const LOADING = "LOADING";
+export const CLEAR_DETAIL = "CLEAR_DETAIL";
+export const FILTERS = "FILTERS";
