@@ -3,11 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { 
     getRecipes,
-    filterRecipesByDiet,
-    filterCreated,
-    orderByName,
-    orderByScore,
-    filters
+    filters,
     } from "../../redux/actions.js";
 import Paginado from "../../components/Paginado/Paginado.jsx";
 import Card from "../../components/Card/Card.jsx";
@@ -43,28 +39,19 @@ const Home = () => {
 
     const handlerFilterDiet = (e) => {
         setFilter({...filter,diets:e.target.value})
-        //dispatch(filterRecipesByDiet(e.target.value))
-        //setCurrentPage(1);
+        
     }
 
     const handlerFilterCreated = (e) => {
         setFilter({...filter,origin:e.target.value})
-        //setCurrentPage(1);
-        //dispatch(filterCreated(e.target.value))
     }
 
     const handlerSortByName = (e) => {
         setFilter({...filter,abc:e.target.value})
-        //dispatch(orderByName(e.target.value))
-        //setCurrentPage(1);
-        //setOrden(`${e.target.value}`)
     }
 
     const handlerSortByScore = (e) => {
         setFilter({...filter,score:e.target.value})
-        //dispatch(orderByScore(e.target.value))
-        //setCurrentPage(1);
-       // setOrden(`${e.target.value}`)
     } 
     //--------------------------------------------------------------------------------------------
     //cuando se monta, hago el dispatch
@@ -78,7 +65,6 @@ const Home = () => {
     const handleRefresh = (event) =>{
         event.preventDefault();
         dispatch(getRecipes());
-        
     }
 
     const handleFilters = (event) =>{
@@ -106,7 +92,7 @@ const Home = () => {
                     <option value="asc">A - Z</option>
                     <option value="desc">Z - A</option>
                 </select>
-                <select onChange={(e) => handlerSortByScore(e)}>
+                <select  onChange={(e) => handlerSortByScore(e)}>
                     <option value="default">-</option>
                     <option value="Higher Score">Highest Score</option>
                     <option value="Lower Score">Lowest Score</option>
@@ -130,7 +116,7 @@ const Home = () => {
                 </select>
                 <button
                 onClick = {(e) => handleFilters(e)}
-                >Aplicar filtros</button>
+                >Apply filter</button>
             </div>
             {cargando ? (
                 <Loading />
@@ -154,7 +140,6 @@ const Home = () => {
                             diets={e.diets}
                                 />
                                 )
-                                
                             })}
                                 
                 </div>

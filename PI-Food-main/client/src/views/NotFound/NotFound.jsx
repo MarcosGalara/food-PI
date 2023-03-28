@@ -1,16 +1,16 @@
 import React from 'react';
-import style from './NotFound.modules.css';
-import error404 from '../../assets/img/Sin título.jpg'
+import error404 from '../../assets/img/pizza-estado-vacio-error-404-ilustracion-plana_288067-137.jpg';
+import './NotFound.css';
 
-
-//QUEDA PENDIENTE TERMINARLO
-
-const NotFound = () => {
-    <div className={style.container}>
-        
-        <h1 className={style.notfound}>Recipe Not Found!</h1>
-        <img  className={style.img}src={error404} alt="imagen" />
-    </div>
+function NotFound() {
+    return (
+        <div className="not-found-container">
+        <h1 className="not-found-title">Error 404</h1>
+        <p className="not-found-message">Sorry, we could not find what you are looking for.</p>
+        <img src={error404} alt="Imagen de comida no encontrada" className="not-found-image" />
+        <a href="/home" className="not-found-link">Volver al inicio</a>
+        </div>
+    );
 }
 
 export default NotFound;

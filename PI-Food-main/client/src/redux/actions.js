@@ -1,16 +1,13 @@
-import { ORDER_BY_NAME,
-        FILTER_BY_CREATED,
-        FILTER_BY_DIET,
+import axios from "axios";
+import {
         GET_RECIPES,
         GET_RECIPE_ID,
         GET_DIETS,
         GET_RECIPE_NAME,
-        ORDEN_BY_SCORE,
         LOADING,
         CLEAR_DETAIL,
-        FILTERS
+        FILTERS,
 } from './types.js';
-import axios from "axios";
 
 // TODAS LAS RECETAS
 export const getRecipes = () => {
@@ -70,7 +67,7 @@ export const recipeByName = (name) => {
 
 
 
-//FILTRADO POR TIPO DE DIETA
+/* //FILTRADO POR TIPO DE DIETA
 export const filterRecipesByDiet = (payload) => {
     return {
         type: FILTER_BY_DIET, 
@@ -100,7 +97,7 @@ export const orderByScore = (payload) => {
         type: ORDEN_BY_SCORE,
         payload
     }
-}
+} */
 
 export const filters = (payload) => {
     return{
@@ -108,3 +105,4 @@ export const filters = (payload) => {
         payload
     }
 }
+
