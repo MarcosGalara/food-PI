@@ -1,6 +1,7 @@
 const { Router  } = require('express');
 const { Recipe, Diet } = require('../db.js');
 const { getApiInfo, getDBinfo, postRecipe } = require('../controllers/controllers.js');
+const deleteRecipe = require('../controllers/Receta_Controllers/deleteRecipeController.js');
 const { Op } = require("sequelize");
 
 const { API_KEY } = process.env;
@@ -89,4 +90,19 @@ router.post("/", async (req, res) =>{
     }
 })
 
+router.delete("/:id", async (req, res) => {
+    let { id } = req.params;
+    
+    try {
+        let recipeToDelete = await deleteRecipe(id);
+        
+        if(recipeToDelete.error) {
+            res.status(400).json({ error: recipeToDelete.error })
+        } else {
+            res.status(200).json({ message: recipeToDelete.message })
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+})
 module.exports = router;
