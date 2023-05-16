@@ -92,17 +92,17 @@ const Home = () => {
                     <option value="asc">A - Z</option>
                     <option value="desc">Z - A</option>
                 </select>
-                <select  onChange={(e) => handlerSortByScore(e)}>
+                <select className='eachFilter' onChange={(e) => handlerSortByScore(e)}>
                     <option value="default">-</option>
                     <option value="Higher Score">Highest Score</option>
                     <option value="Lower Score">Lowest Score</option>
                 </select>
-                <select onChange={(e) => handlerFilterCreated(e)} >
+                <select className='eachFilter' onChange={(e) => handlerFilterCreated(e)} >
                     <option value="All">All</option>
                     <option value="created">Created</option>
                     <option value="api">From API</option>
                 </select>
-                <select onChange={(e)=> handlerFilterDiet(e)}>
+                <select className='eachFilter' onChange={(e)=> handlerFilterDiet(e)}>
                     <option value="All">All Diets</option>
                     <option value="gluten free">Gluten Free</option>
                     <option value="dairy free">Dairy Free</option>
@@ -114,7 +114,7 @@ const Home = () => {
                     <option value="fodmap friendly">Low Fodmap</option>
                     <option value="whole 30">Whole 30</option>
                 </select>
-                <button
+                <button className='eachFilter'
                 onClick = {(e) => handleFilters(e)}
                 >Apply filter</button>
             </div>
@@ -157,5 +157,6 @@ const Home = () => {
                 </div>
         )
     }
+    
 
 export default Home;

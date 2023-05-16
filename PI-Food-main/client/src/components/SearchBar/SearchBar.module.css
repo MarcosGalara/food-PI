@@ -21,7 +21,6 @@
   font-size: 16px;
   margin-left: 15px;
   cursor: pointer;
-  /* margin-top: 8px; */
   border-radius: 16%;
   padding: 7px;
   height: 40px;
@@ -33,7 +32,7 @@
   border: 1px 0px 0px 0px;
   text-decoration: underline;
   color: #fff;
-  
+  text-decoration: none;
 }
 
 .SearchContainer{

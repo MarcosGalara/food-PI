@@ -98,7 +98,7 @@ const Form = () => {
         setForm({ ...form, step: "" })
         }
     }
-
+    
     const handleDelete = (e) => {
         
         e.preventDefault();

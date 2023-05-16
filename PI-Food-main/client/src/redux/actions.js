@@ -7,6 +7,7 @@ import {
         LOADING,
         CLEAR_DETAIL,
         FILTERS,
+        DELETE_RECIPE,
 } from './types.js';
 
 // TODAS LAS RECETAS
@@ -25,6 +26,14 @@ export const getRecipeById = (id) =>{
         const apiData = await axios.get(`http://localhost:3001/recipes/${id}`);
         const user = apiData.data;
         dispatch({ type: GET_RECIPE_ID, payload: user})
+    }
+}
+
+//BORRAR RECETA POR ID
+export const deleteRecipeById = (id) => {
+    return{
+        type: DELETE_RECIPE,
+        payload: id
     }
 }
 

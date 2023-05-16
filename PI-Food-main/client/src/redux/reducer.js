@@ -7,6 +7,7 @@ import {
     LOADING,
     CLEAR_DETAIL,
     FILTERS,
+    DELETE_RECIPE,
 } from "./types.js";
 
 
@@ -55,6 +56,17 @@ const rootReducer = (state = initialState, action) => {
         case POST_RECIPES:
             return{
                 ...state
+            }
+
+        case DELETE_RECIPE:
+            const updatedRecipes = state.recipes.filter((e) => {
+                if(e.id !== action.payload){
+                    return e
+                }
+            })
+            return{
+                ...state,
+                recipes: updatedRecipes
             }
 
         case FILTERS:

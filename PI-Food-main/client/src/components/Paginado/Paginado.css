@@ -22,6 +22,8 @@
     cursor: pointer;
   }
   .number:focus {
-    background-color: #eaffc2;
-    color: black;
+    background-color: black;
+    color: #fff;
   }
+
+  
